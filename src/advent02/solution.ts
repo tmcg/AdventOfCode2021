@@ -2,7 +2,7 @@
 import { ISolution, InputFile, Vector2 } from '../shared';
 
 export class SubmarineCommand {
-   constructor(public direction: string, public distance: number) {}
+   constructor(public direction: string, public units: number) {}
 
    static from(line: string): SubmarineCommand {
       let s = line.split(' ');
@@ -12,25 +12,38 @@ export class SubmarineCommand {
 
 export class Submarine {
    commands: SubmarineCommand[];
-   position: Vector2;
+   position: Vector2 = new Vector2(0,0);
+   aim: number = 0;
 
    constructor(input: string[]) {
       this.commands = input.map(line => SubmarineCommand.from(line));
-      this.position = new Vector2(0,0);
    }
 
-   applyAllCommands(): Submarine {
+   applyCommandsPart1(): Submarine {
       for(let command of this.commands)
-         this.applyCommand(command);
+      {
+         switch(command.direction) {
+            case "up": this.position.y -= command.units; break;
+            case "down": this.position.y += command.units; break;
+            case "forward": this.position.x += command.units; break;
+         }
+      }
       return this;
    }
 
-   applyCommand(command: SubmarineCommand) {
-      switch(command.direction) {
-         case "up": this.position.y -= command.distance; break;
-         case "down": this.position.y += command.distance; break;
-         case "forward": this.position.x += command.distance; break;
+   applyCommandsPart2(): Submarine {
+      for(let command of this.commands)
+      {
+         switch(command.direction) {
+            case "up": this.aim -= command.units; break;
+            case "down": this.aim += command.units; break;
+            case "forward":
+               this.position.x += command.units;
+               this.position.y += this.aim * command.units;
+               break;
+         }
       }
+      return this;
    }
 }
 
@@ -39,16 +52,16 @@ class Solution2 implements ISolution {
 
    solvePart1(): string {
       const inputFile = new InputFile(this.dayNumber);
-      let sub = new Submarine(inputFile.readLines()).applyAllCommands();
+      let sub = new Submarine(inputFile.readLines()).applyCommandsPart1();
 
       return '' + (sub.position.x * sub.position.y);
    }
 
    solvePart2(): string {
-      //const inputFile = new InputFile(this.dayNumber);
-      //let sub = new Submarine(inputFile.readLines()).applyAllCommands();
+      const inputFile = new InputFile(this.dayNumber);
+      let sub = new Submarine(inputFile.readLines()).applyCommandsPart2();
 
-      return '99';
+      return '' + (sub.position.x * sub.position.y);
    }
 }
 

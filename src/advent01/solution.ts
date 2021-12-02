@@ -8,7 +8,14 @@ class Solution1 implements ISolution {
       const inputFile = new InputFile(this.dayNumber);
       const numbers = inputFile.readLines().map(x => +x);
 
-      return '';
+      let increaseCount = 0;
+      for (let i = 0; i < numbers.length - 1; i++)
+      {
+         if (numbers[i] < numbers [i+1])
+            increaseCount++;
+      }
+
+      return ''+increaseCount;
    }
 
    solvePart2() : string {

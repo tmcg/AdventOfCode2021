@@ -4,6 +4,7 @@ import { ISolution, InputFile } from '../shared';
 export class BingoCard {
    numbers: number[];
    marks: boolean[];
+   bingo: boolean = false;
    constructor(public lines: string[]) {
       this.numbers = lines.join(' ').split(' ').filter(s => s).map(s => +s);
       this.marks = this.numbers.map(n => false);
@@ -46,6 +47,7 @@ export class BingoCard {
          if (this.numbers[i] === draw) {
             this.marks[i] = true;
             if (this.checkBingo(i)) {
+               this.bingo = true;
                return true;
             }
          }
@@ -92,9 +94,20 @@ class Solution4 implements ISolution {
    }
 
    solvePart2(): string {
-      //const inputFile = new InputFile(this.dayNumber);
-      //let game = new BingoGame(inputFile.readLines());
+      const inputFile = new InputFile(this.dayNumber);
+      let game = new BingoGame(inputFile.readLines());
 
+      let lastWin: BingoCard;
+      for (let draw of game.draws) {
+         for (let card of game.cards) {
+            if (card.mark(draw)) {
+               lastWin = card;
+            }
+         }
+         game.cards = game.cards.filter(c => !c.bingo);
+         if (game.cards.length === 0)
+            return '' + (draw * lastWin!.sumUnmarked());
+      }
       return 'xx';
    }
 }

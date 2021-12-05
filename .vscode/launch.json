@@ -7,7 +7,7 @@
          "name": "Jest Debug",
          "program": "${workspaceFolder}/node_modules/jest/bin/jest",
          "args": [
-            "src/advent04/solution.spec.ts",
+            "src/advent05/solution.spec.ts",
          ],
          "console": "integratedTerminal",
          "internalConsoleOptions": "neverOpen",

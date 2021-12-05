@@ -34,8 +34,8 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
     expect(ocean.vents[1].end.y).toBe(0);
   });
 
-  it('should plot sample vents', () => {
-    let ocean = cleanOcean().plot();
+  it('should plot sample vents part 1', () => {
+    let ocean = cleanOcean().plot(false);
 
     expect(ocean.field.slice(0,10)).toStrictEqual([0,0,0,0,0,0,0,1,0,0]);
     expect(ocean.field.slice(10,20)).toStrictEqual([0,0,1,0,0,0,0,1,0,0]);
@@ -49,11 +49,26 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
     expect(ocean.field.slice(90,100)).toStrictEqual([2,2,2,1,1,1,0,0,0,0]);
   });
 
+  it('should plot sample vents part 2', () => {
+    let ocean = cleanOcean().plot(true);
+
+    expect(ocean.field.slice(0,10)).toStrictEqual([1,0,1,0,0,0,0,1,1,0]);
+    expect(ocean.field.slice(10,20)).toStrictEqual([0,1,1,1,0,0,0,2,0,0]);
+    expect(ocean.field.slice(20,30)).toStrictEqual([0,0,2,0,1,0,1,1,1,0]);
+    expect(ocean.field.slice(30,40)).toStrictEqual([0,0,0,1,0,2,0,2,0,0]);
+    expect(ocean.field.slice(40,50)).toStrictEqual([0,1,1,2,3,1,3,2,1,1]);
+    expect(ocean.field.slice(50,60)).toStrictEqual([0,0,0,1,0,2,0,0,0,0]);
+    expect(ocean.field.slice(60,70)).toStrictEqual([0,0,1,0,0,0,1,0,0,0]);
+    expect(ocean.field.slice(70,80)).toStrictEqual([0,1,0,0,0,0,0,1,0,0]);
+    expect(ocean.field.slice(80,90)).toStrictEqual([1,0,0,0,0,0,0,0,1,0]);
+    expect(ocean.field.slice(90,100)).toStrictEqual([2,2,2,1,1,1,0,0,0,0]);
+  });
+
   it('should solve part 1', () => {
     expect(solution.solvePart1()).toBe('8622');
   });
 
   it('should solve part 2', () => {
-    expect(solution.solvePart2()).toBe('');
+    expect(solution.solvePart2()).toBe('22037');
   });
 });

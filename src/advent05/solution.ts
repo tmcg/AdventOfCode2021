@@ -40,7 +40,7 @@ export class OceanFloor {
       return Math.max(sxmax, symax, exmax, eymax) + 1;
    }
 
-   plot(): OceanFloor {
+   plot(withDiagonals: boolean): OceanFloor {
       for (let vent of this.vents) {
          let x = vent.start.x;
          let y = vent.start.y;
@@ -56,6 +56,14 @@ export class OceanFloor {
             while (y <= vent.end.y) {
                this.mark(x, y);
                y++;
+            }
+         }
+
+         if (withDiagonals && !vent.horizontal && !vent.vertical) {
+            while (x <= vent.end.x) {
+               this.mark(x, y);
+               x++;
+               y += vent.end.y > vent.start.y ? 1 : -1;
             }
          }
       }
@@ -74,16 +82,16 @@ class Solution5 implements ISolution {
 
    solvePart1(): string {
       const inputFile = new InputFile(this.dayNumber);
-      let ocean = new OceanFloor(inputFile.readLines()).plot();
+      let ocean = new OceanFloor(inputFile.readLines()).plot(false);
 
       return '' + ocean.field.filter(x => x >= 2).length;
    }
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let ocean = new OceanFloor(inputFile.readLines());
+      let ocean = new OceanFloor(inputFile.readLines()).plot(true);
 
-      return 'xx';
+      return '' + ocean.field.filter(x => x >= 2).length;
    }
 }
 

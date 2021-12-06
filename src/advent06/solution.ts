@@ -5,20 +5,23 @@ export class LanternfishSchool {
    fish: number[];
    day: number = 0;
    constructor(input: string) {
-      this.fish = input.split(',').map(x => +x);
+      this.fish = [0,0,0,0,0,0,0,0,0];
+      for (let f of input.split(',').map(x => +x)) {
+         this.fish[f]++;
+      }
    }
 
    nextDay(): number {
-      let newFish = this.fish.filter(n => n === 0).length;
-      this.fish = this.fish.map(n => {
-         return n === 0 ? 6 : n - 1;
-      });
-
-      for (let i = 0; i < newFish; i++)
-         this.fish.push(8);
+      let z = this.fish.shift()!;
+      this.fish[6] += z;
+      this.fish.push(z);
 
       this.day++;
       return this.day;
+   }
+
+   total(): number {
+      return this.fish.reduce((p,c) => p + c);
    }
 }
 
@@ -31,14 +34,16 @@ class Solution6 implements ISolution {
 
       while(school.nextDay() < 80);
 
-      return '' + school.fish.length;
+      return '' + school.total();
    }
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let school = new LanternfishSchool(inputFile.readText());
+      let school = new LanternfishSchool(inputFile.readText());
 
-      return 'xx';
+      while(school.nextDay() < 256);
+
+      return '' + school.total();
    }
 }
 

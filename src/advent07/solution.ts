@@ -8,19 +8,24 @@ export class CrabSwarm {
       this.crabs = input.split(',').map(x => +x);
    }
 
-   align(): number {
+   align(part: number): number {
       let min = Math.min(...this.crabs);
       let max = Math.max(...this.crabs);
+      let calcFuel = part === 1 ?
+         (n: number) => { return n; } :
+         (n: number) => { return (n*n + n)/2; };
 
       let lastSum = Number.MAX_SAFE_INTEGER;
       for (let i = min; i <= max; i++) {
-         let thisValue = this.crabs.map(c => Math.abs(c - i)).reduce((p, c) => p + c);
+         let thisValue = this.crabs.map(c => Math.abs(c - i)).map(calcFuel).reduce((p,c) => p + c);
+
          if (thisValue < lastSum) {
             lastSum = thisValue;
          }
       }
       return lastSum;
    }
+
 }
 
 class Solution7 implements ISolution {
@@ -30,14 +35,14 @@ class Solution7 implements ISolution {
       const inputFile = new InputFile(this.dayNumber);
       let swarm = new CrabSwarm(inputFile.readText());
 
-      return '' + swarm.align();
+      return '' + swarm.align(1);
    }
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let swarm = new CrabSwarm(inputFile.readText());
+      let swarm = new CrabSwarm(inputFile.readText());
 
-      return 'xx';
+      return '' + swarm.align(2);
    }
 }
 

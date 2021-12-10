@@ -134,3 +134,29 @@ export class Util {
 
    }
 }
+
+export class SetUtil {
+   static union<T>(setA: Set<T>, setB: Set<T>): Set<T> {
+      return new Set<T>([...setA, ...setB]);
+   }
+
+   static intersect<T>(setA: Set<T>, setB: Set<T>): Set<T> {
+      return new Set<T>([...setA].filter(t => setB.has(t)));
+   }
+
+   static subtract<T>(setA: Set<T>, setB: Set<T>): Set<T> {
+      return new Set<T>([...setA].filter(t => !setB.has(t)));
+   }
+
+   static isSuperset<T>(setA: Set<T>, setB: Set<T>): boolean {
+      for (let b of setB) {
+         if (!setA.has(b))
+            return false;
+      }
+      return true;
+   }
+
+   static areEqual<T>(setA: Set<T>, setB: Set<T>): boolean {
+      return setA.size === setB.size && [...setA].every(t => setB.has(t));
+   }
+}

@@ -160,3 +160,24 @@ export class SetUtil {
       return setA.size === setB.size && [...setA].every(t => setB.has(t));
    }
 }
+
+
+export class Stack<T> {
+   private items: T[] = [];
+
+   push(item: T) {
+      this.items.push(item);
+   }
+
+   pop(): T | undefined {
+      return this.items.pop();
+   }
+
+   peek(): T | undefined {
+      return this.items[this.size() - 1];
+   }
+
+   size(): number {
+      return this.items.length;
+   }
+}

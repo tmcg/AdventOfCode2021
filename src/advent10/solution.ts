@@ -1,12 +1,12 @@
 
-import { ISolution, InputFile, Stack } from '../shared';
+import { ISolution, InputFile, Stack, Util } from '../shared';
 
 export class SyntaxLine {
 
    constructor(public input: string) {
    }
 
-   findCorruption(): string {
+   parseInput(): [string, string] {
       let stack = new Stack<string>();
 
       for (let token of this.input.split('')) {
@@ -15,19 +15,17 @@ export class SyntaxLine {
             continue;
          }
 
-         let p = stack.pop();
-         if ((token === ']' && p !== '[') ||
-             (token === ')' && p !== '(') ||
-             (token === '}' && p !== '{') ||
-             (token === '>' && p !== '<'))
-            return token;
+         if (stack.pop() !== this.flipToken(token))
+            return [token, ''];
       }
 
-      return '';
+      return ['', stack.toArray().map(this.flipToken).reverse().join('')];
    }
 
    findCorruptionScore(): number {
-      let s = this.findCorruption();
+      let s = this.parseInput()[0];
+      if (s === '') return 0;
+
       let n: number = 0;
       switch(s) {
          case ')': n = 3; break;
@@ -36,6 +34,29 @@ export class SyntaxLine {
          case '>': n = 25137; break;
       }
       return n;
+   }
+
+   findAutoCompleteScore(): number {
+      let s = this.parseInput()[1];
+      if (s === '') return 0;
+
+      let n: number = 0;
+      for (const ch of s.split('')) {
+         n *= 5;
+         switch(ch) {
+            case ')': n += 1; break;
+            case ']': n += 2; break;
+            case '}': n += 3; break;
+            case '>': n += 4; break;
+         }
+      }
+      return n;
+   }
+
+   flipToken(s: string): string {
+      let tokens = ['[',']','(',')','{','}','<','>'];
+      let index = tokens.findIndex(t => t === s);
+      return tokens[index + (index % 2 === 0 ? +1 : -1)];
    }
 }
 
@@ -51,8 +72,16 @@ class Solution10 implements ISolution {
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
+      let lines = inputFile.readLines().map(s => new SyntaxLine(s));
 
-      return 'xx';
+      let scores = lines.map(s => s.findAutoCompleteScore()).filter(n => n > 0).sort((a, b) => a - b);
+      /*
+      let logger = Util.createLogger();
+      for(let score of scores)
+         logger.info(score);
+      */
+
+      return '' + scores[(scores.length - 1) / 2];
    }
 }
 

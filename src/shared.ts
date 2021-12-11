@@ -113,14 +113,12 @@ export class Util {
       return (''+value).padStart(size, '0');
    }
 
-   static createLogger() : any {
+   static createLogger(transports: winston.transport[] = []) : any {
+
       const logger = winston.createLogger({
          level: 'info',
          format: winston.format.simple(),
-         transports: [
-            new winston.transports.Console(),
-            new winston.transports.File({ filename: './output.log' })
-         ]
+         transports: transports.length > 0 ? transports : [Util.toConsoleTransport()],
       });
 
       return {
@@ -131,7 +129,14 @@ export class Util {
             logger.info(JSON.stringify(obj));
          }
       }
+   }
 
+   static toConsoleTransport() : winston.transport {
+      return new winston.transports.Console();
+   }
+
+   static toFileTransport(filename: string = './output.log'): winston.transport {
+      return new winston.transports.File({ filename: filename })
    }
 }
 
@@ -179,5 +184,9 @@ export class Stack<T> {
 
    size(): number {
       return this.items.length;
+   }
+
+   toArray(): T[] {
+      return [...this.items];
    }
 }

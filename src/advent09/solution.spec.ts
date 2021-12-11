@@ -27,13 +27,24 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
     expect(points[2].y).toBe(2);
     expect(points[3].x).toBe(6);
     expect(points[3].y).toBe(4);
-  })
+  });
+
+  it('should find basins', () => {
+    let cave = new LavaCave(['2199943210','3987894921','9856789892','8767896789','9899965678']);
+
+    expect(cave.findBasins()).toBe(1134);
+    expect(cave.bmap[0]).toStrictEqual(['1,0','1,0','','','','9,0','9,0','9,0','9,0','9,0']);
+    expect(cave.bmap[1]).toStrictEqual(['1,0','','2,2','2,2','2,2','','9,0','','9,0','9,0']);
+    expect(cave.bmap[2]).toStrictEqual(['','2,2','2,2','2,2','2,2','2,2','','6,4','','9,0']);
+    expect(cave.bmap[3]).toStrictEqual(['2,2','2,2','2,2','2,2','2,2','','6,4','6,4','6,4','']);
+    expect(cave.bmap[4]).toStrictEqual(['','2,2','','','','6,4','6,4','6,4','6,4','6,4']);
+  });
 
   it('should solve part 1', () => {
     expect(solution.solvePart1()).toBe('594');
   });
 
   it('should solve part 2', () => {
-    expect(solution.solvePart2()).toBe('');
+    expect(solution.solvePart2()).toBe('858494');
   });
 });

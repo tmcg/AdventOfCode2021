@@ -39,6 +39,6 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
   });
 
   it('should solve part 2', () => {
-    expect(solution.solvePart2()).toBe('xx');
+    expect(solution.solvePart2()).toBe('244');
   });
 });

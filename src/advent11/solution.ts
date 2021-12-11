@@ -1,5 +1,4 @@
 
-import { posix } from 'path/posix';
 import { ISolution, InputFile, IPosition } from '../shared';
 
 export class OctopusSwarm {
@@ -57,7 +56,7 @@ export class OctopusSwarm {
    forEach(fn: (pos: IPosition) => void) {
       for (let y = 0; y < this.height; y++) {
          for (let x = 0; x < this.width; x++) {
-            fn({x, y});
+            fn({ x, y });
          }
       }
    }
@@ -82,12 +81,21 @@ export class OctopusSwarm {
       return flashCount;
    }
 
-   countFlashes(steps: number): Number {
+   countFlashes(steps: number): number {
       let flashCount = 0;
       for (let step = 0; step < steps; step++) {
          flashCount += this.step();
       }
       return flashCount;
+   }
+
+   countSteps(): number {
+      let stepCount = 1;
+      let syncCount = this.width * this.height;
+      while (this.step() < syncCount) {
+         stepCount++;
+      };
+      return stepCount;
    }
 }
 
@@ -103,9 +111,9 @@ class Solution11 implements ISolution {
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let swarm = new OctopusSwarm(inputFile.readLines());
+      let swarm = new OctopusSwarm(inputFile.readLines());
 
-      return '';
+      return '' + swarm.countSteps();
    }
 }
 

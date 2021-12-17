@@ -26,7 +26,6 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
       '8,10', '9,0', '', 'fold along y=7', 'fold along x=5']);
 
     paper.foldOver(paper.folds[0]);
-    console.log(paper.dots);
 
     expect(paper.dots).toStrictEqual([
       { x: 6, y: 4 }, { x: 0, y: 0 }, { x: 9, y: 4 }, { x: 0, y: 3 },
@@ -43,6 +42,6 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
   });
 
   it('should solve part 2', () => {
-    expect(solution.solvePart2()).toBe('xx');
+    expect(solution.solvePart2()).toBe('HECRZKPR');
   });
 });

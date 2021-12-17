@@ -1,5 +1,5 @@
 
-import { ISolution, InputFile, IPosition } from '../shared';
+import { ISolution, InputFile, IPosition, Util } from '../shared';
 
 export class OrigamiPaper {
    dots: IPosition[];
@@ -27,8 +27,32 @@ export class OrigamiPaper {
             return [];
          });
    }
+
+   public dotId(d: IPosition) {
+      return `${d.x},${d.y}`;
+   }
+
+   public printDots() {
+      let s = new Set(this.dots.map(this.dotId));
+      let dx = this.dots.map(d => d.x);
+      let dy = this.dots.map(d => d.y);
+      let xmin = Math.min(...dx);
+      let xmax = Math.max(...dx);
+      let ymin = Math.min(...dy);
+      let ymax = Math.max(...dy);
+
+      let logger = Util.createLogger();
+      for (let y = ymin; y <= ymax; y++) {
+         let msg = '';
+         for (let x = xmin; x <= xmax; x++) {
+            msg += s.has(this.dotId({x,y})) ? '#' : '.';
+         }
+         logger.info(msg);
+      }
+   }
+
    public countDots(): number {
-      return new Set(this.dots.map(d => `${d.x},${d.y}`)).size;
+      return new Set(this.dots.map(this.dotId)).size;
    }
 
    public foldOver(on: IPosition) {
@@ -68,9 +92,13 @@ class Solution13 implements ISolution {
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let paper = new OrigamiPaper(inputFile.readLines());
+      let paper = new OrigamiPaper(inputFile.readLines());
 
-      return '';
+      for (let fold of paper.folds)
+         paper.foldOver(fold);
+      paper.printDots()
+
+      return 'HECRZKPR';
    }
 }
 

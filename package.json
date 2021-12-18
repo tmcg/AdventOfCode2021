@@ -4,8 +4,9 @@
   "description": "Advent of Code 2021",
   "scripts": {
     "index": "ts-node src/index.ts",
-    "test": "jest src/advent13/solution.spec.ts",
-    "test-watch": "jest src/advent13/solution.spec.ts --watch"
+    "jest": "jest",
+    "test": "jest src/advent14/solution.spec.ts",
+    "test-watch": "jest src/advent14/solution.spec.ts --watch"
   },
   "author": "Tony McGee <tmcgee.au@gmail.com>",
   "license": "ISC",

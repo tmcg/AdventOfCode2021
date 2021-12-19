@@ -1,5 +1,5 @@
 
-import { ISolution, InputFile, Vector2, Dictionary, Compass } from '../shared';
+import { ISolution, InputFile, Vector2, Dictionary, Compass, Util } from '../shared';
 import Graph from 'node-dijkstra';
 
 export class CaveSquare extends Vector2 {
@@ -14,15 +14,19 @@ export class ChitonCave {
    width: number;
    height: number;
 
-   constructor(input: string[]) {
-      this.width = input[0].length;
-      this.height = input.length;
+   constructor(input: string[], tile: number = 1) {
+      let inputWidth = input[0].length;
+      let inputHeight = input.length;
+
+      this.width = inputWidth * tile;
+      this.height = inputHeight * tile;
 
       // parse the input
       for (let j = 0; j < this.height; j++) {
          for (let i = 0; i < this.width; i++) {
-            const ch = input[j][i];
-            const sq = new CaveSquare(i, j, +ch);
+            const ch = input[j % inputHeight][i % inputWidth];
+            let risk = (+ch + Math.floor(i / inputWidth) + Math.floor(j / inputHeight));
+            const sq = new CaveSquare(i, j, ((risk - 1) % 9) + 1);
             this.space[sq.id()] = sq;
          }
       }
@@ -59,10 +63,21 @@ export class ChitonCave {
       this.graph.addNode(sq.id(), edges);
    }
 
-   findPathPart1(): number {
+   findPath(): number {
       const startId = this.squareAt(0, 0)!.id();
       const finishId = this.squareAt(this.width - 1, this.height - 1)!.id();
       return this.graph.path(startId, finishId, { cost: true }).cost;
+   }
+
+   print() {
+      let logger = Util.createLogger();
+      for (let j = 0; j < this.height; j++) {
+         let s = '';
+         for (let i = 0; i < this.width; i++) {
+            s += this.squareAt(i, j)!.risk;
+         }
+         logger.info(s);
+      }
    }
 }
 
@@ -73,14 +88,14 @@ class Solution15 implements ISolution {
       const inputFile = new InputFile(this.dayNumber);
       let cave = new ChitonCave(inputFile.readLines());
 
-      return '' + cave.findPathPart1();
+      return '' + cave.findPath();
    }
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let cave = new ChitonCave(inputFile.readLines());
+      let cave = new ChitonCave(inputFile.readLines(), 5);
 
-      return '';
+      return '' + cave.findPath();
    }
 }
 

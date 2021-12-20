@@ -45,10 +45,21 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
   });
 
   it('should sum packet versions', () => {
-    expect(Packet.fromHex('8A004A801A8002F478').sumVersions()).toBe(16);
-    expect(Packet.fromHex('620080001611562C8802118E34').sumVersions()).toBe(12);
-    expect(Packet.fromHex('C0015000016115A2E0802F182340').sumVersions()).toBe(23);
-    expect(Packet.fromHex('A0016C880162017C3686B18A3D4780').sumVersions()).toBe(31);
+    expect(Packet.fromHex('8A004A801A8002F478').checksum()).toBe(16);
+    expect(Packet.fromHex('620080001611562C8802118E34').checksum()).toBe(12);
+    expect(Packet.fromHex('C0015000016115A2E0802F182340').checksum()).toBe(23);
+    expect(Packet.fromHex('A0016C880162017C3686B18A3D4780').checksum()).toBe(31);
+  });
+
+  it('should eval packets', () => {
+    expect(Packet.fromHex('C200B40A82').evaluate()).toBe(3);
+    expect(Packet.fromHex('04005AC33890').evaluate()).toBe(54);
+    expect(Packet.fromHex('880086C3E88112').evaluate()).toBe(7);
+    expect(Packet.fromHex('CE00C43D881120').evaluate()).toBe(9);
+    expect(Packet.fromHex('D8005AC2A8F0').evaluate()).toBe(1);
+    expect(Packet.fromHex('F600BC2D8F').evaluate()).toBe(0);
+    expect(Packet.fromHex('9C005AC2F8F0').evaluate()).toBe(0);
+    expect(Packet.fromHex('9C0141080250320F1802104A08').evaluate()).toBe(1);
   });
 
   it('should solve part 1', () => {
@@ -56,6 +67,6 @@ describe(`Advent of Code Day ${solution.dayNumber}`, () => {
   });
 
   it('should solve part 2', () => {
-    expect(solution.solvePart2()).toBe('xx');
+    expect(solution.solvePart2()).toBe('1392637195518');
   });
 });

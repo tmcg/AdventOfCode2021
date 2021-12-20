@@ -95,8 +95,25 @@ export class Packet {
       }
    }
 
-   sumVersions(): number {
-      return this.version + this.sub.map(s => s.sumVersions()).reduce((p, c) => p + c, 0);
+   checksum(): number {
+      return this.version + this.sub.map(s => s.checksum()).reduce((p, c) => p + c, 0);
+   }
+
+   evaluate(): number {
+      let subEval = this.sub.map(s => s.evaluate());
+
+      switch (this.typeId) {
+         case 0: return subEval.reduce((p, c) => p + c, 0);
+         case 1: return subEval.reduce((p, c) => p * c, 1);
+         case 2: return Math.min(...subEval);
+         case 3: return Math.max(...subEval);
+         case 4: return this.value;
+         case 5: return (subEval[0] || 0) > (subEval[1] || 0) ? 1 : 0;
+         case 6: return (subEval[0] || 0) < (subEval[1] || 0) ? 1 : 0;
+         case 7: return (subEval[0] || 0) === (subEval[1] || 0) ? 1 : 0;
+      }
+
+      return 0;
    }
 }
 
@@ -107,14 +124,14 @@ class Solution16 implements ISolution {
       const inputFile = new InputFile(this.dayNumber);
       let p0 = Packet.fromHex(inputFile.readText());
 
-      return '' + p0.sumVersions();
+      return '' + p0.checksum();
    }
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let p0 = Packet.fromHex(inputFile.readText());
+      let p0 = Packet.fromHex(inputFile.readText());
 
-      return '';
+      return '' + p0.evaluate();
    }
 }
 

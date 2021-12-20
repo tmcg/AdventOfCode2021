@@ -50,6 +50,13 @@ export interface Vec4 {
    w : number;
 }
 
+export interface IRectangle {
+   left: number;
+   top: number;
+   right: number;
+   bottom: number;
+}
+
 export class Vector2 implements Vec2 {
    constructor(public x: number, public y: number) {}
 
@@ -66,6 +73,20 @@ export class Vector4 implements Vec4 {
    constructor(public x: number, public y: number, public z: number, public w: number) {}
 
    id = () => `${this.x},${this.y},${this.z},${this.w}`;
+}
+
+export class Rectangle implements IRectangle {
+   constructor(public left: number, public top: number, public right: number, public bottom: number) {}
+
+   width(): number { return this.right - this.left; }
+   height(): number { return this.bottom - this.top; }
+
+   contains(pos: Vec2): boolean {
+      return pos.x >= this.left && pos.x <= this.right
+         && pos.y <= this.top && pos.y >= this.bottom;
+   }
+
+   id = () => `${this.left},${this.top},${this.right},${this.bottom}`;
 }
 
 export interface Dictionary<T> {

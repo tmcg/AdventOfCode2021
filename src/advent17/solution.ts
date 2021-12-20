@@ -49,6 +49,18 @@ export class TrickShot {
 
       return maxY;
    }
+
+   testShotsPart2(): number {
+      let ct = 0;
+
+      for (let j = -200; j < 2000; j++) {
+         for (let i = 0; i < 300; i++) {
+            ct += this.testShot({x: i, y: j}).hit ? 1 : 0;
+         }
+      }
+
+      return ct;
+   }
 }
 
 class Solution17 implements ISolution {
@@ -63,9 +75,9 @@ class Solution17 implements ISolution {
 
    solvePart2(): string {
       const inputFile = new InputFile(this.dayNumber);
-      //let shot = new TrickShot(inputFile.readText());
+      let shot = new TrickShot(inputFile.readText());
 
-      return '';
+      return '' + shot.testShotsPart2();
    }
 }
 

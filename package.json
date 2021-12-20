@@ -5,8 +5,8 @@
   "scripts": {
     "index": "ts-node src/index.ts",
     "jest": "jest",
-    "test": "jest src/advent15/solution.spec.ts",
-    "test-watch": "jest src/advent15/solution.spec.ts --watch"
+    "test": "jest src/advent16/solution.spec.ts",
+    "test-watch": "jest src/advent16/solution.spec.ts --watch"
   },
   "author": "Tony McGee <tmcgee.au@gmail.com>",
   "license": "ISC",
